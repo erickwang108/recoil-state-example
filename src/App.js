@@ -1,7 +1,6 @@
 import { Suspense } from 'react';
-import { RecoilEnv } from 'recoil';
+import { RecoilEnv, RecoilRoot } from 'recoil';
 import { ChakraProvider, Heading, Center, Box, Stack } from '@chakra-ui/react';
-import { RecoilRoot } from 'recoil';
 import { PokemonList, PokemonDrawer, PokemonLoader } from './components/Pokemon';
 
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false;
