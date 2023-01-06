@@ -2,6 +2,9 @@ import { atom, atomFamily, selector, selectorFamily } from "recoil";
 
 const LIMIT = 5;
 
+
+const getKey = id => `pokemon_list_${id}`;
+
 async function getData(url) {
   const response = await fetch(url);
   return response.json();
@@ -9,7 +12,23 @@ async function getData(url) {
 
 export const pokemonListPageAtom = atomFamily({
   key: "pokemonListPageAtom",
-  default: 0,
+  default: id => {
+    const data = localStorage.getItem(getKey(id));
+    if (data) {
+      const serialData = JSON.parse(data);
+      return serialData[id]?.page || 0;
+    }
+    return 0;
+  },
+  effects: id => [
+    ({ onSet }) => {
+      onSet(page => {
+        if (typeof page !== 'undefined') {
+          localStorage.setItem(getKey(id), JSON.stringify({ [id]: { page } }));
+        }
+      })
+    },
+  ],
 });
 
 export const fetchPokemonListSelector = selectorFamily({
